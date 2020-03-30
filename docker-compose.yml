@@ -1,0 +1,32 @@
+version: '2.0'
+services:
+  ui:
+        restart: always
+        build: './ui'
+        ports: 
+          - "3000:3000"
+        depends_on: 
+          - server
+  server:
+        restart: always
+        build: './server'
+        ports: 
+           - "9000:9000"
+        depends_on: 
+           - mongo
+        environment: 
+            - MONGO_DB_URI=mongodb://mongo/tax-mgmt
+  mongo:    
+        image: mongo
+        volumes:
+            - ./data:/data/db
+        ports:
+          - "27017:27017"
+  # load-balancer:
+  #       build: './load-balancer'
+  #       ports: 
+  #         - "8080:80"
+  #       depends_on:
+  #         - server
+  #         - ui
+    
